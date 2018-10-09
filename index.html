@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="shortcut icon" href="">
+        <title>TodoList</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" type="text/css"  href="bootstrap.css" />
+
+
+</head>
+<body style="background-image: url(background.jpg); background-size: 100%;" >
+        
+              
+        
+                  <div class="container" align=center; style="background-color: transparent" >
+                     
+                    <h1 class="display-3" id='hai' style="color:white; text-align: center; margin-top: 10% ">Hai, </h1>
+                    <h1 class="display-3" style="text-align: center; color: white">Apa Kegiatanmu hari ini?</h1>
+                   <center><form>
+                    <input id="isi" type="text" placeholder="Masukan Kegiatan" required="">
+                    <button type="submit" style="margin-left: 30px" id="simpan" class="btn btn-success ">+</button>
+                </form>
+                 <br>
+                    </center>
+                    <ul id="daftar">
+                    </ul>
+                  </div>
+
+        
+        <br>
+        <script>
+             const haiDOM= document.getElementById("hai");
+        let todos = [];
+        const isiDOM= document.getElementById("isi");
+        const simpanDOM= document.getElementById("simpan");
+        const listDOM= document.getElementById("daftar");
+        
+    
+        const data = JSON.parse(localStorage.getItem('todos'));
+
+        if(data==null){
+            todos=[];
+        }else{
+        todos = data; 
+        }
+        const halo = localStorage.getItem('nama');
+
+            if(localStorage.getItem('nama')==null){
+            var nama= prompt("Siapa namamu?"); 
+            localStorage.setItem('nama', nama);
+            const halo = localStorage.getItem('nama');
+            haiDOM.innerHTML= haiDOM.innerHTML+halo+"!";
+            }
+            else{
+            const halo = localStorage.getItem('nama');
+            haiDOM.innerHTML= haiDOM.innerHTML+halo+"!";
+            }
+
+
+        function render(){
+            let index = 0;
+            listDOM.innerHTML="";
+            while(index<todos.length){
+                console.log(index);
+                if (todos[index].status==true){
+                listDOM.innerHTML +=  '<li class="list-group-item"><input checked onchange="centang('+index+')" type="checkbox"><strike>' + todos[index].keg + '</strike><button style="margin-left: 80%;" class="btn btn-danger" onclick="hapus('+index+')">x</button></li>';
+                }else{
+                    listDOM.innerHTML +=  '<li class="list-group-item"><input onchange="centang('+index+')" type="checkbox">' + todos[index].keg + '<button style="margin-left: 80%;" class="btn btn-danger" onclick="hapus('+index+')">x</button></li>';
+
+                }
+                index++;
+            }
+        }
+        
+              render();
+
+       
+        simpanDOM.addEventListener('click', function(){
+            const keg ={ keg : isiDOM.value,
+                         status : false};
+
+            todos.push(keg);
+            console.log(todos)
+            render();
+           localStorage.setItem('todos',JSON.stringify(todos)); 
+
+        }) 
+       
+       function hapus(x){
+            todos.splice(x,1);
+            render();
+            localStorage.setItem('todos',JSON.stringify(todos)); 
+       }
+
+       function centang(x){
+           console.log(x)
+           if(todos[x].status == false){
+               todos[x].status = true;
+           } else {
+               todos[x].status = false;
+           }
+            render();
+            localStorage.setItem('todos',JSON.stringify(todos)); 
+
+       }
+      
+
+        </script>
+              
+</body>
+</html>
